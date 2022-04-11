@@ -1,23 +1,50 @@
 package br.com.letscode.cursosead.controller;
 
+import br.com.letscode.cursosead.exception.CursoNaoEncontradoException;
 import br.com.letscode.cursosead.model.Curso;
 import br.com.letscode.cursosead.repository.CursoRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import br.com.letscode.cursosead.service.CursoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/cursos")
 public class CursoController {
 
-    @Autowired
-    private CursoRepository cursoRepository;
+    private final CursoService cursoService;
+
+    public CursoController(CursoService cursoService){
+        this.cursoService = cursoService;
+    }
 
     @PostMapping
-    public  void salvar(@RequestBody Curso curso){
-        this.cursoRepository.save(curso);
+    public ResponseEntity salvar(@RequestBody Curso curso){
+        this.cursoService.salvarCurso(curso);
+
+        ResponseEntity response = new ResponseEntity("Curso criado com sucesso",HttpStatus.CREATED);
+        return response;
     }
+
+    @GetMapping
+    public List<Curso> selecionarTodos(){
+        return this.cursoService.selecionarTodos();
+    }
+
+    @PutMapping("{id}")
+    public void atualizarCurso(@PathVariable("id") Integer idCurso, @RequestBody Curso curso){
+        this.cursoService.alterarCurso(idCurso, curso);
+
+    }
+
+    @DeleteMapping("{id}")
+    public void deleteCurso(@PathVariable("id") Integer idCurso){
+       this.cursoService.deletarCurso(idCurso);
+    }
+
+
+
 }

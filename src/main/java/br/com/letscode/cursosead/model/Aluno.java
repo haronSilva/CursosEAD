@@ -4,15 +4,13 @@ import lombok.*;
 
 import javax.persistence.*;
 
-import java.util.Set;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @Getter
 @Setter
 @Entity
-public class Curso {
+public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
@@ -20,10 +18,7 @@ public class Curso {
     @Column
     private String nome;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
-    @JoinTable(name="CURSO_ALUNO",
-            joinColumns = {@JoinColumn(name="curso_id")},
-            inverseJoinColumns = {@JoinColumn(name="aluno_id")})
-    private Set<Aluno> alunos;
+    @Column
+    private String matricula;
 
 }
