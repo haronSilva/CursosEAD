@@ -3,6 +3,8 @@ package br.com.letscode.cursosead.service;
 import br.com.letscode.cursosead.exception.CursoNaoEncontradoException;
 import br.com.letscode.cursosead.model.Curso;
 import br.com.letscode.cursosead.repository.CursoRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.List;
 @Service
 public class CursoService {
     private final CursoRepository cursoRepository;
-
+    private final Logger LOGGER = LoggerFactory.getLogger(CursoService.class);
     public CursoService(CursoRepository cursoRepository){
         this.cursoRepository = cursoRepository;
     }
@@ -24,6 +26,8 @@ public class CursoService {
     }
 
     public void salvarCurso(Curso curso){
+        LOGGER.info("Início método salvar");
+        LOGGER.debug("Entidade curso a ser salvo : {}",curso);
         this.cursoRepository.save(curso);
     }
 

@@ -3,7 +3,7 @@ package br.com.letscode.cursosead.model;
 import lombok.*;
 
 import javax.persistence.*;
-
+import javax.validation.Valid;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -24,6 +24,7 @@ public class Curso {
     @JoinTable(name="CURSO_ALUNO",
             joinColumns = {@JoinColumn(name="curso_id")},
             inverseJoinColumns = {@JoinColumn(name="aluno_id")})
+    @Valid
     private Set<Aluno> alunos;
 
 }

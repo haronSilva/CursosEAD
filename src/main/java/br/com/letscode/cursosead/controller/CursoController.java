@@ -1,13 +1,12 @@
 package br.com.letscode.cursosead.controller;
 
-import br.com.letscode.cursosead.exception.CursoNaoEncontradoException;
 import br.com.letscode.cursosead.model.Curso;
-import br.com.letscode.cursosead.repository.CursoRepository;
-
 import br.com.letscode.cursosead.service.CursoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -22,7 +21,7 @@ public class CursoController {
     }
 
     @PostMapping
-    public ResponseEntity salvar(@RequestBody Curso curso){
+    public ResponseEntity salvar(@Valid @RequestBody Curso curso){
         this.cursoService.salvarCurso(curso);
 
         ResponseEntity response = new ResponseEntity("Curso criado com sucesso",HttpStatus.CREATED);
