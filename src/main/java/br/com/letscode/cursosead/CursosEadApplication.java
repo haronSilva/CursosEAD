@@ -1,16 +1,23 @@
 package br.com.letscode.cursosead;
 
-import org.springframework.boot.CommandLineRunner;
+import br.com.letscode.cursosead.service.NovoBean;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.Scanner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 @SpringBootApplication
-public class CursosEadApplication{
+@Configuration
+@Slf4j
+public class CursosEadApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(CursosEadApplication.class, args);
     }
 
+    @Bean(initMethod = "customInit", destroyMethod = "customDestroy",name = "NovoBean")
+    public NovoBean novoBean(){
+        return new NovoBean();
+    }
 }

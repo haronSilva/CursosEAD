@@ -4,6 +4,7 @@ import br.com.letscode.cursosead.exception.AlunoCadastradoException;
 import br.com.letscode.cursosead.exception.AlunoNaoEncontradoException;
 import br.com.letscode.cursosead.model.Aluno;
 import br.com.letscode.cursosead.service.AlunoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,6 +13,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/alunos")
+@Slf4j
 public class AlunoController {
     private final AlunoService alunoService;
 
@@ -27,7 +29,7 @@ public class AlunoController {
     }
 
     @PostMapping
-    public ResponseEntity salvarAluno(@Valid @RequestBody Aluno aluno){
+    public ResponseEntity salvarAluno( @Valid @RequestBody Aluno aluno){
         this.alunoService.salvarAluno(aluno);
         ResponseEntity response = new ResponseEntity("Aluno criado com sucesso", HttpStatus.CREATED);
         return response;
@@ -44,4 +46,6 @@ public class AlunoController {
         ResponseEntity response = new ResponseEntity(e.getMessage(), HttpStatus.CONFLICT);
         return response;
     }
+
+
 }
