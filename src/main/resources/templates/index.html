@@ -18,9 +18,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th scope="col">Id</th>
-                                <th scope="col">Nome</th>
-                                <th scope="col">Matricula</th>
+                                <th scope="col" th:text="#{aluno.id}"></th>
+                                <th scope="col" th:text="#{aluno.nome}">Nome</th>
+                                <th scope="col" th:text="#{aluno.matricula}">Matricula</th>
+                                <th scope="col" th:text="#{alunos.tabela.coluna.acao}"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -28,9 +29,11 @@
                                 <td th:text="${aluno.id}"></td>
                                 <td th:text="${aluno.nome}"></td>
                                 <td th:text="${aluno.matricula}"></td>
+                                <td><a th:href="@{/alunos/delecao/{matricula}(matricula=${aluno.matricula})}"><i class="bi bi-trash"></a></td>
                             </tr>
                         </tbody>
                     </table>
+                    <a href="/alunos/novo-aluno">Cadastrar Novo Aluno</a>
                 </div>
             </div>
         </div>

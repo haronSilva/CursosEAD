@@ -9,9 +9,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Controller
 @RequestMapping("/alunos")
@@ -32,15 +34,30 @@ public class AlunoController {
 
     @GetMapping
     public String index(Model model){
-        model.addAttribute("alunos", this.alunoService.listarTodos());
+        List<Aluno> alunos = this.alunoService.listarTodos();
+        model.addAttribute("alunos", alunos);
         return "index";
     }
 
-    @PostMapping
+    @GetMapping("novo-aluno")
+    public String formularioNovoAluno(Aluno aluno){
+        return "formularioAluno";
+    }
+
+    /*@PostMapping
     public ResponseEntity salvarAluno( @Valid @RequestBody Aluno aluno){
         this.alunoService.salvarAluno(aluno);
         ResponseEntity response = new ResponseEntity("Aluno criado com sucesso", HttpStatus.CREATED);
         return response;
+    }*/
+
+    @PostMapping
+    public String salvarAluno(@Valid Aluno aluno, BindingResult result){
+        if(result.hasErrors()){
+            return "formularioAluno";
+        }
+        this.alunoService.salvarAluno(aluno);
+        return "redirect:/alunos";
     }
 
     @PutMapping("{matricula}")
@@ -54,6 +71,12 @@ public class AlunoController {
     public ResponseEntity deleteAluno(@PathVariable("matricula") String matricula){
         this.alunoService.deletarAluno(matricula);
         return ResponseEntity.ok("Aluno deletado com sucesso.");
+    }
+
+    @GetMapping("delecao/{matricula}")
+    public String deletarAluno(@PathVariable("matricula") String matricula){
+        this.alunoService.deletarAluno(matricula);
+        return "redirect:/alunos";
     }
 
     @ExceptionHandler
