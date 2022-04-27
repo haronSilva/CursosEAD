@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <title>Login</title>
+</head>
+<body>
+  <div class="container vh-100 d-flex justify-content-center align-items-center">
+    <form action="#" th:action="@{/login}" method="post">
+        <div class="text-danger" th:if="${param.error}">
+            Usuário ou senha inválido.
+        </div>
+        <div class="text-success" th:if="${param.logout}">
+            Logout foi executado com sucesso.
+        </div>
+      <div class="form-group">
+        <label for="usuario">Usuario</label>
+        <input id="usuario" type="text" name="usu" class="form-control" />
+      </div>
+      <div class="form-group">
+        <label for="senha">Senha</label>
+        <input id="senha" type="password" name="psw" class="form-control" />
+      </div>
+      <input type="submit" class="btn btn-primary" value="Login">
+    </form>
+  </div>
+
+</body>
+</html>
