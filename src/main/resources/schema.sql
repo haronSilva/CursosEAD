@@ -24,3 +24,17 @@ CREATE TABLE CURSO_ALUNO (
    CONSTRAINT FK_CURSO_ALUNO_ALUNO FOREIGN KEY (ALUNO_ID) REFERENCES ALUNO(ID),
    CONSTRAINT FK_CURSO_ALUNO_CURSO FOREIGN KEY (CURSO_ID) REFERENCES CURSO(ID)
 );
+
+DROP TABLE IF EXISTS user;
+create table users (
+  username varchar (50) not null primary key,
+  password varchar(120) not null,
+  enabled boolean not null
+);
+
+DROP TABLE IF EXISTS authorities;
+create table authorities(
+    username varchar(50) not null,
+    authority varchar(50) not null,
+    foreign key (username) references users(username)
+);

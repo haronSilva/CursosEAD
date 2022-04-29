@@ -1,43 +1,47 @@
 package br.com.letscode.cursosead.security;
 
+
+import br.com.letscode.cursosead.filters.CustomFilter;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
+
+import javax.sql.DataSource;
 
 @Configuration
 @EnableWebSecurity
+@AllArgsConstructor
 public class SegurancaConfig extends WebSecurityConfigurerAdapter {
-
-
-    private UserDetailsService userDetailsServiceCustom() {
+    private DataSource dataSource;
+   /* private UserDetailsService userDetailsServiceCustom() {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
+        //$2a$10$vcoEdK1t1XAaVd3Wt3L3ZuqhYprThyaRwX2WkjfC9sfLERqC/.t.e
         UserDetails admin = User.withUsername("haron")
-                .password(passwordEncoder.encode("admin"))
+                .password("{bcrypt}$2a$10$vcoEdK1t1XAaVd3Wt3L3ZuqhYprThyaRwX2WkjfC9sfLERqC/.t.e")
                 .roles("ADMIN")
                 .build();
+        //$2a$10$3l2o9kTB2SzAHTLLrkpFkOurLSIYZ2X/837jSCqyY/Ce190Jo2fOi
         UserDetails aluno = User.withUsername("aluno")
-                .password(passwordEncoder.encode("aluno"))
+                .password("{bcrypt}$2a$10$3l2o9kTB2SzAHTLLrkpFkOurLSIYZ2X/837jSCqyY/Ce190Jo2fOi")
                 .roles("USER")
                 .build();
 
         return new InMemoryUserDetailsManager(admin, aluno);
-    }
+    }*/
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsServiceCustom());
+       //auth.userDetailsService(userDetailsServiceCustom());
+        auth.jdbcAuthentication().dataSource(dataSource);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+
         http.authorizeRequests()
                 .antMatchers("/alunos").hasAnyRole("ADMIN","USER")
                 .antMatchers("/alunos/**").hasRole("ADMIN")
@@ -47,5 +51,8 @@ public class SegurancaConfig extends WebSecurityConfigurerAdapter {
                         .and().logout().permitAll().and().exceptionHandling().accessDeniedPage("/403");
 
         http.csrf().disable();
+        http.addFilterBefore(new CustomFilter(), BasicAuthenticationFilter.class);
     }
+
+
 }

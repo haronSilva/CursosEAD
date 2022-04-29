@@ -4,6 +4,7 @@ import br.com.letscode.cursosead.model.Curso;
 import br.com.letscode.cursosead.service.CursoService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,6 +21,7 @@ public class CursoController {
         this.cursoService = cursoService;
     }
 
+
     @PostMapping
     public ResponseEntity salvar(@Valid @RequestBody Curso curso){
         this.cursoService.salvarCurso(curso);
@@ -27,7 +29,7 @@ public class CursoController {
         ResponseEntity response = new ResponseEntity("Curso criado com sucesso",HttpStatus.CREATED);
         return response;
     }
-
+    @Secured("ROLE_ADMIN")
     @GetMapping
     public List<Curso> selecionarTodos(){
         return this.cursoService.selecionarTodos();
